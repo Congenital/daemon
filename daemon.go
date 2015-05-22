@@ -32,8 +32,6 @@ func NewStringBuffer() *StringBuffer {
 }
 
 func (this *StringBuffer) Write(buff []byte) (int, error) {
-	log.Info(*(*string)(unsafe.Pointer(&buff)))
-
 	var relative int
 
 	for i := 0; i < len(buff); i++ {
@@ -125,7 +123,7 @@ func main() {
 
 	waitgroup.Add(1)
 
-	go func(root string) {
+	go func() {
 		defer waitgroup.Done()
 
 		for {
@@ -137,7 +135,7 @@ func main() {
 			<-timer.C
 			timer.Reset(time.Second * time.Duration(t))
 		}
-	}(root)
+	}()
 
 	go func() {
 		for {
@@ -221,7 +219,6 @@ func CheckApp(apps []*APP, root string, servers []string) ([]string, error) {
 			}
 
 			if i == appslength-1 {
-				log.Info(root, server)
 				noStartApp = append(noStartApp, server)
 			}
 		}
@@ -246,8 +243,11 @@ func ParseFilter(filter string) []string {
 func GetFilter(filters []string) string {
 	var filter string
 
-	for _, v := range filters {
-		filter += `$11~/` + v + `/||`
+	for i, v := range filters {
+		filter += `$11~/` + ParsePath(v) + `/`
+		if i != len(filters)-1 {
+			filter += "||"
+		}
 	}
 
 	return filter
