@@ -32,6 +32,7 @@ func NewStringBuffer() *StringBuffer {
 }
 
 func (this *StringBuffer) Write(buff []byte) (int, error) {
+	log.Info(*(*string)(unsafe.Pointer(&buff)))
 	var relative int
 
 	for i := 0; i < len(buff); i++ {
@@ -123,11 +124,12 @@ func main() {
 
 	waitgroup.Add(1)
 
+	fl := GetFilter(ParseFilter(filter))
+
 	go func() {
 		defer waitgroup.Done()
 
 		for {
-			fl := GetFilter(ParseFilter(filter))
 
 			GetApp(buff, fl)
 			buff.Msg <- 1
@@ -157,6 +159,7 @@ func main() {
 
 			log.Info("Need Start Server:\n", noStartServer)
 			StartApps(root, noStartServer)
+
 		}
 	}()
 
@@ -168,7 +171,7 @@ func GetApp(write io.Writer, param string) {
 	cmd := exec.Command("/bin/bash", "-c", `ps aux | awk '`+param+` {print $1" "$2" "$11}'`)
 
 	cmd.Stdout = write
-	err := cmd.Start()
+	err := cmd.Run()
 	if err != nil {
 		log.Error(err)
 		return
@@ -183,6 +186,7 @@ func StartApps(root string, app []string) {
 
 func StartApp(root string, app string) {
 	cmd := exec.Command("run", root+app)
+	log.Info("Start : ", root+app)
 
 	file, err := os.Create(root + app + ".log")
 	if err != nil {
@@ -194,7 +198,7 @@ func StartApp(root string, app string) {
 	cmd.Stdin = os.Stdin
 	cmd.Stderr = file
 
-	err = cmd.Start()
+	err = cmd.Run()
 	if err != nil {
 		log.Error(err)
 		return
