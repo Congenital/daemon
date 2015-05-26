@@ -24,21 +24,17 @@ func main() {
 		return
 	}
 
-	path := GetPath(os.Args[1])
-
-	if GetRelative(path) >= 0 {
-		if err != nil {
-			log.Error(err)
-			return
-		}
-	}
-
 	server := exec.Command(filePath, os.Args[2:]...)
-
 	server.Stdout = os.Stdout
 	server.Stderr = os.Stderr
 	server.Stdin = os.Stdin
-	server.Dir = path
+
+	var path string
+
+	if GetRelative(path) >= 0 {
+		path = GetPath(os.Args[1])
+		server.Dir = path
+	}
 
 	err = server.Start()
 	if err != nil {
