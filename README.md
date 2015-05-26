@@ -23,6 +23,7 @@
 >> -server 想要启动的真实路径。(逗号分割，参数需要加双引号,程序可以接收参数 例如: -server="./account,home/admin/pushserver 10,")
 >
 >> -time 查询时间。一般就是服务器检查的时间间隔，也是重启间隔。
+> 默认会在所执行程序输出与错误输出重定向到程序所在目录下 （程序名.log）
 
 > Example
 >> daemon -root="/home/user/server" -server="./account,pushserver/push-server"-filter="account,pushserver/push-server" -time=10
