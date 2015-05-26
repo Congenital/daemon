@@ -18,9 +18,9 @@
 >
 >> -root 参数为程序根目录，可以为空
 >
->> -filter 为程序过滤器，用以查找到关注的应用，并重启。（逗号分割，参数需要加双引号， 例如: -filter="account,pushserver"）
+>> -filter 为程序过滤器，用以查找到关注的应用，并重启。需要与server参数中服务器参数保持一致。（逗号分割，参数需要加双引号， 例如: -filter="./account,home/admin/pushserver 10"）
 >
->> -server 想要启动的真实路径。(逗号分割，参数需要加双引号,程序可以接收参数 例如: -server="./account,home/admin/pushserver 10,")
+>> -server 想要启动的真实路径。(逗号分割，参数需要加双引号,程序可以接收参数 例如: -server="./account,home/admin/pushserver 10")
 >
 >> -time 查询时间。一般就是服务器检查的时间间隔，也是重启间隔。
 >
