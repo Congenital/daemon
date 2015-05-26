@@ -27,7 +27,6 @@ func main() {
 	path := GetPath(os.Args[1])
 
 	if GetRelative(path) >= 0 {
-		err = os.Chdir(path)
 		if err != nil {
 			log.Error(err)
 			return
@@ -39,6 +38,7 @@ func main() {
 	server.Stdout = os.Stdout
 	server.Stderr = os.Stderr
 	server.Stdin = os.Stdin
+	server.Dir = path
 
 	err = server.Start()
 	if err != nil {
