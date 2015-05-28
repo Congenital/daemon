@@ -188,7 +188,7 @@ func StartApp(root string, app string) {
 	cmd := exec.Command("run", root+app)
 	log.Info("Start : ", root+app)
 
-	file, err := os.Create(root + app + ".log")
+	file, err := os.OpenFile(root+app+".log", os.O_CREATE|os.O_RDWR|os.O_APPEND, 0660)
 	if err != nil {
 		log.Error(err)
 		return
